@@ -45,3 +45,15 @@ pip3 install pandas numpy SQLAlchemy
 ```
 
 2. python3 ./setup/sqlsetup.py dbpath dbname log_file_path
+
+### Front-end Visualization Setup
+
+1. pip3 install -r ./ELA/requirements.txt
+
+
+2. FLASK server
+	```
+	cd ELA
+	./start.sh
+	```
+
