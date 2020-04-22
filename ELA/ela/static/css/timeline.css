@@ -1,0 +1,98 @@
+.area {
+    fill: #bd96cf;
+    clip-path: url(#clip);
+}
+
+.zoom {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+}
+
+.brush rect.selection {
+    fill: #bcb8b8;
+    fill-opacity: 0.3;
+}
+
+.axis.axis--y .tick text{
+    font-size: 5px;
+}
+
+.axis.axis--x .tick text{
+    font-size: 6px;
+}
+
+.axis.axis--y1 .tick text{
+    font-size: 5px;
+}
+
+.axis.axis--x1 .tick text{
+    font-size: 6px;
+}
+
+rect.selected {
+    stroke: #000;
+    stroke-width: 2px;
+}
+.axis .domain {
+    display: none;
+}
+
+.axis.axis--y1 .domain {
+    display: inline;
+    stroke-width: 1px;
+}
+
+.axis.axis--x1 .domain {
+    display: inline;
+    stroke-width: 1px;
+}
+
+
+.axis.axis--ywc .domain {
+    display: inline;
+    stroke-width: 1px;
+}
+
+.axis.axis--xwc .domain {
+    display: inline;
+    stroke-width: 1px;
+}
+
+.det.x.axis path.domain{
+    display:inline;
+}
+
+
+.axis.axis--wx .domain {
+    display: inline;
+    stroke-width: 1px;
+}
+
+
+.axis.axis--ywc .tick line {
+    display: none;
+}
+
+
+.axis .tick text.selected {
+    font-weight: bold;
+    font-size: 1.2em;
+    fill: #47ff63;
+}
+.axis .tick line.selected {
+    stroke: #47ff63;
+}
+
+
+.slider-container .axis .tick text {
+    fill: black;
+}
+
+.ml-div{
+    font-weight: bold;
+    font-size: 0.4em;
+    fill: #47ff63;
+}
+
+

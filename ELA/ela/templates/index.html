@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Log Analysis</title>
+    <link rel="shortcut icon" href="#" />
+
+    <script src="{{ url_for('static',filename='js/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="/static/js/sijax/sijax.js"></script>
+    <script type="text/javascript">{{ g.sijax.get_js()|safe }} </script>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/timeline.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/main_page.css')}}">
+
+    <script src="{{ url_for('static', filename='js/d3.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/d3.layout.cloud.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/simple_slider.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/d3.legend.js')}}"></script>
+
+    <script src="{{ url_for('static', filename='js/helper_js.js')}}"></script>
+
+    <script src="{{ url_for('static', filename='js/topics_timeline.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/job_table.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/sedc_plot.js')}}"></script>
+
+
+</head>
+<body>
+<table>
+    <tr>
+        <td class="table-cols", id="table-lc-33" width="220px">
+
+            <table id="subtable-left">
+                <tr id="row-sedc"> 
+                    <td>
+
+                        <div id="text-node-main-sedc">
+                            <div id="text-sedc-names">SEDC:</div>
+                            <div id="job-sedc-list"></div>
+                            <div id="text-sedc-names-button"></div>
+                        </div>
+                        
+                    </td>
+                </tr>
+                <tr id="row-node">
+                    <td>
+
+                        <div id="text-node-main">
+                            <div id="text-node-names">NODE NAMES:</div>
+                            <div id="job-node-list"></div>
+                            <div id="text-node-names-button"></div>
+                        </div>
+                        
+                    </td>
+                </tr>
+
+                <tr id="row-rnn">
+                    <td>
+
+                        <div id="rnn-pred-div">
+                            <div id="rnn-pred-text">PREDICTED ERRORS:</div>
+                            <div id="rnn-pred-list"></div>
+                            <div id="text-rnn-names-button"></div>
+                        </div>
+                        
+                    </td>
+                </tr>
+   
+            </table>
+
+
+        </td>
+
+        <td class="table-cols" id="table-rc33-old">
+            <table>
+                <tbody>
+                <tr>
+                    <td class="table-cols" id="table-rc33-up">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="table-cols" id="table-rc33">
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </td>
+
+        <td>
+            
+            <table id="jobs-table">
+                <tr>
+                    <div id="job-selection-table"></div>
+                </tr>
+                <tr>
+                    <td><div id="job-month-selection"></div></td>
+                    <td><div id="job-year-selection"></div></td>
+                </tr>
+                
+            </table>
+
+
+
+        </td>
+    </tr>
+</table>
+
+<script>
+    var svg = d3.select("#table-rc33")
+        .append("svg")
+        .attr("width", 1008)
+        .attr("height", 575);
+    var globSliderVal = [0.7,1],
+        colorWc = d3.scaleLinear()
+            .domain(d3.range(1, 5))
+            .range(['#eebf2e', '#3bd62d', '#1ec8c7', "#1e58c8", "#831ec8"]);
+
+    var svg_width = +svg.attr("width"),
+        svg_height = +svg.attr("height"),
+        margin = {top: 10, right: 5, bottom: 57, left: 45}, //110 right: 350
+        margin2 = {top: 545, right: 200, bottom: 30, left: 42},
+        width = svg_width - margin.left - margin.right,
+        height = svg_height - margin.top - margin.bottom,
+        height2 = 20,//svg_height - height - margin.top,
+        margin_slider = {top: 5, right: 5, bottom: 5, left: 20},
+        padding = {top: 20, right:20, left:10, bottom:10};
+
+    var parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S");
+
+    var x = d3.scaleTime().range([0, width]),
+        x2 = d3.scaleTime().range([0, width]),
+        y = d3.scaleLinear().range([height, 0]),
+        y2 = d3.scaleLinear().range([height2, 0]);
+
+
+    var sedcWidth = svg_width + 50,
+            sedcHeight = 200;
+
+    var height_line = sedcHeight -margin2.bottom;
+    var yScaleSedc = d3.scaleLinear()
+        .domain([0, 1]) 
+        .range([height_line, 0]);
+
+    var sedcLine = d3.line()
+            .x((d, i) => {  return x(d.date); })
+            .y((d) => { return yScaleSedc(d.mean); })
+            .curve(d3.curveMonotoneX);
+
+    var max_topic_clouds = 30;
+
+    var missing_clouds = [];
+    var sliderRange = d3.sliderBottom();
+
+
+    var jobMonths = d3.select("#job-month-selection"),
+        jobYears = d3.select("#job-year-selection"),
+        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"],
+        years = ["2018", "2019"],
+        defaultJobName = "August";
+
+      // add arrow button icon
+    var bc = d3.select("#table-lc-33").node().getBoundingClientRect(),
+                bc_width = bc.width-10,
+                bc_height = bc.height-10;
+
+    addArrowIcon("table-lc-33", "text-sedc-names-button", "arrow-sedc-enter", "select-sedc");
+
+    d3.select("#text-sedc-names-button svg").append("g")
+        .style("visibility", "hidden")
+        .attr("transform","translate("+((bc_width/2)-5)+",0) scale(0.7)")
+        .append("use")
+        .attr("id", "sedc-enter-use")
+        .attr("xlink:href","#arrow-sedc-enter")
+        .attr("fill","black")
+        .attr("stroke","black")
+        .attr("stroke-width",2);
+
+    addArrowIcon("table-lc-33", "text-rnn-names-button", "arrow-enter-rnn", "change-rnn");
+
+    d3.select("#text-rnn-names-button svg").append("g")
+        .attr("transform","translate("+((bc_width/2)-5)+",0) scale(0.7)")
+        .append("use")
+        .attr("id", "rnn-enter-use")
+        .attr("xlink:href","#arrow-enter-rnn")
+        .attr("fill","black")
+        .attr("stroke","black")
+        .attr("stroke-width",2);
+
+    Sijax.request("get_jobs", ["./ela/static/job_data/df_JOB_"+defaultJobName+".csv", defaultJobName]);
+
+</script>
+
+</body>
+</html>

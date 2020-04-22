@@ -1,0 +1,117 @@
+table, th, td, tr {
+    border: 1px solid black;
+}
+
+#jobs-table, #jobs-table tr, #jobs-table td{
+    border: hidden;
+}
+
+#subtable-left td{
+    height:285px;
+}
+
+#subtable-left{
+    background: #eee;
+}
+
+.axis.axis--ywc .tick text{
+    font-weight: bold;
+    stroke:#000000;
+    stroke-width:0.5px;
+
+}
+.axis.axis--ywc :nth-child(3) text{
+    fill: #eebf2e;
+    opacity: 1;
+
+
+}
+.axis.axis--ywc :nth-child(5) text{
+    fill: #3bd62d;
+    opacity: 1;
+
+}
+.axis.axis--ywc :nth-child(7) text{
+    fill: #1ec8c7;
+    opacity: 1;
+
+}
+.axis.axis--ywc :nth-child(9) text{
+    fill: #1e58c8;
+    opacity: 1;
+
+}
+.axis.axis--ywc :nth-child(11) text{
+    fill: #831ec8;
+    opacity: 1;
+
+}
+
+#job-selection-table tr:nth-of-type(odd) {
+    background: #eee;
+}
+
+#job-selection-table table {
+    overflow-y:scroll;
+    height:500px;
+    display:block;
+    font: 9px Georgia, Serif;
+}
+
+#job-selection-table th {
+    background: #333;
+    color: white;
+    font-weight: bold;
+    cursor: s-resize;
+    background-repeat: no-repeat;
+    background-position: 3% center;
+}
+#job-selection-table td, #job-selection-table th {
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+#job-selection-table th.des:after {
+    content: "\21E9";
+}
+
+#job-selection-table th.aes:after {
+    content: "\21E7";
+}
+
+#text-sedc-names, #text-node-names, #rnn-pred-text{
+    padding-bottom: 5px;
+}
+
+#text-node-names,#text-node-main-sedc, #rnn-pred-div{
+    font: 13px Georgia, Serif;
+    font-weight: bold;
+    visibility: hidden;
+
+}
+
+#ml-job-status{
+    font: 13px Georgia, Serif;
+    font-weight: bold;
+}
+
+#job-sedc-list, #job-node-list, #rnn-pred-list{
+    padding-left: 5px;
+}
+
+#table-rc33-up{
+    height:200px;
+}
+
+#sedc-multiselect, #rnn-multiselect{
+    overflow-x:scroll;
+}
+
+
+#text-node-main {
+    transform: translate(0px, 5px);
+}
+#text-node-main-sedc {
+    transform: translate(0px, 5px);
+}
