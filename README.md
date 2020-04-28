@@ -44,6 +44,7 @@
 	pip3 install pandas numpy SQLAlchemy
 	python3 ./setup/sqlsetup.py dbpath dbname log_file_path
 	```
+
 ### Front-end Visualization Setup
 
 1. pip3 install -r ./ELA/requirements.txt

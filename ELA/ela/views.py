@@ -31,7 +31,33 @@ df = {}
 def ela():
 
     def get_clouds(obj_response, month, jname, component_names):
-        # section contains incomplete data... need to annonymize
+        # section contains incomplete data... 
+        df['component_names'] = component_names
+        # dbname is used to retrieve the job hardware consolidated file
+        dbname = "./ela/static/df_encoded/df_encoded_"+month+"_tiny.db"
+
+        if "df_tmp" not in df:
+            BASE_DIR = os.getcwd()
+            db_path = os.path.join(BASE_DIR, dbname )
+
+            engine = create_engine('sqlite:///'+db_path, echo=False)
+            q = "SELECT * FROM "+dbname
+            query = engine.execute(q)
+            res = query.fetchall()
+            
+            df_tmp = pd.DataFrame(res, columns=query._metadata.keys)
+            df_tmp.drop(columns='index', inplace=True)
+            df['df_tmp'] = df_tmp
+
+        df_1 = df['df_tmp']
+        df_2 = df_1[(df_1.JOB_NAME == jname) & (df_1.COMPONENT_NAME.isin(component_names))]
+
+        max_iter = 2 if df_2.shape[0] < df_2.shape[1] else 200
+
+        dfs = save_tot_files(df_2, month, jname, component_names, max_iter)
+        df["df_ALL"] = df_2
+        df["df_tail"] = dfs[0]
+        df["df_words"] = dfs[1]
 
         obj_response.script('zoomTimeLine(5, 100)')
 
