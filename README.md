@@ -3,6 +3,9 @@
 
 ### InfluxDB Setup
 
+InfluxDB is an open-source time series database developed by InfluxData. InfluxDB is designed to
+handle time series data more efficiently. The datastore provides a SQL-like language to query the data, called InfluxQL, which makes it easy for the developers to integrate into their applications.
+
 1. Download binaries and unzip
 
     ```
@@ -37,9 +40,10 @@
     ```
 
 
-### SQL Setup
+### SQLDB Setup
 
 1. software requirements for sql setup
+SQLAlchemy is a library that facilitates the communication between Python programs and databases. This library is used as an Object Relational Mapper (ORM) tool that translates Python classes to tables on relational databases and automatically converts function calls to SQL statements. SQLAlchemy also provides a standard interface that allows developers to create database-agnostic code to communicate with a wide variety of database engines.
 	```
 	pip3 install pandas numpy SQLAlchemy
 	python3 ./setup/sqlsetup.py dbpath dbname log_file_path
