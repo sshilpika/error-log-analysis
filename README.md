@@ -61,3 +61,5 @@ SQLAlchemy is a library that facilitates the communication between Python progra
 	./start.sh
 	```
 
+## How to Cite:
+Shilpika, S., Lusch, B., Emani, M., Simini, F., Vishwanath, V., Papka, M. E., & Ma, K. L. (2022, May). Toward an In-Depth Analysis of Multifidelity High Performance Computing Systems. In 2022 22nd IEEE International Symposium on Cluster, Cloud and Internet Computing (CCGrid) (pp. 716-725). IEEE.
