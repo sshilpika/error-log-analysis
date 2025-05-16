@@ -1,1 +1,1 @@
-### Online MRDMD code will be made available soon
+### incremental MRDMD code is [here](https://github.com/sshilpika/incremental-mrdmd)
